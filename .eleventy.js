@@ -27,8 +27,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter("slugify", slugify);
 
   // URL-filter
-  eleventyConfig.addFilter("url", (url, pathPrefix = "/") => {
-    if (!url) return pathPrefix + "/";
+  eleventyConfig.addFilter("url", (url, pathPrefix = "/pa-audit-sv/") => {
+    if (!url) return pathPrefix;
     if (!pathPrefix.endsWith("/")) pathPrefix += "/";
     if (url.startsWith("/")) url = url.substring(1);
     return pathPrefix + url;
