@@ -150,8 +150,8 @@ function injectCharts(indexPath, summary) {
 
   const chartScript = `
   <div class="wcag-summary">
-    <h4>Afgekeurde WCAG Succescriteria</h4>
-    <p>Totaal: ${summary.wcag.length} van 55</p>
+    <h4>Underkända WCAG-framgångskriterier</h4>
+    <p>Totalt: ${summary.wcag.length} av 55</p>
     <ul class="wcag-list">
       ${summary.wcag.map((sc) => `<li>${sc}</li>`).join("\n")}
     </ul>
@@ -185,7 +185,7 @@ function injectCharts(indexPath, summary) {
     });
   </script>`;
 
-  const updatedHtml = html.replace(/(<h[23][^>]*>\s*Resultaat\s*<\/h[23]>)/i, `$1\n${chartScript}`);
+  const updatedHtml = html.replace(/(<h[23][^>]*>\s*Resultat\s*<\/h[23]>)/i, `$1\n${chartScript}`);
   fs.writeFileSync(indexPath, updatedHtml, "utf-8");
   console.log(`✅ Charts toegevoegd aan ${indexPath}`);
 }
