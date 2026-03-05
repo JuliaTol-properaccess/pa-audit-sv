@@ -62,65 +62,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // === WCAG principe, niveau + type beperking toevoegen aan meta ===
   const wcagData = {
-    // Principe 1: Waarneembaar
-    "1.1.1": { principe: "Waarneembaar", niveau: "A", beperking: ["Visueel"] },
-    "1.2.1": { principe: "Waarneembaar", niveau: "A", beperking: ["Visueel", "Auditief"] },
-    "1.2.2": { principe: "Waarneembaar", niveau: "A", beperking: ["Auditief"] },
-    "1.2.3": { principe: "Waarneembaar", niveau: "A", beperking: ["Visueel"] },
-    "1.2.4": { principe: "Waarneembaar", niveau: "AA", beperking: ["Auditief"] },
-    "1.2.5": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel"] },
-    "1.3.1": { principe: "Waarneembaar", niveau: "A", beperking: ["Visueel"] },
-    "1.3.2": { principe: "Waarneembaar", niveau: "A", beperking: ["Visueel"] },
-    "1.3.3": { principe: "Waarneembaar", niveau: "A", beperking: ["Visueel"] },
-    "1.3.4": { principe: "Waarneembaar", niveau: "AA", beperking: ["Motorisch"] },
-    "1.3.5": { principe: "Waarneembaar", niveau: "AA", beperking: ["Cognitief", "Motorisch"] },
-    "1.4.1": { principe: "Waarneembaar", niveau: "A", beperking: ["Visueel"] },
-    "1.4.2": { principe: "Waarneembaar", niveau: "A", beperking: ["Auditief", "Cognitief"] },
-    "1.4.3": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel"] },
-    "1.4.4": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel"] },
-    "1.4.5": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel"] },
-    "1.4.10": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel"] },
-    "1.4.11": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel"] },
-    "1.4.12": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel", "Cognitief"] },
-    "1.4.13": { principe: "Waarneembaar", niveau: "AA", beperking: ["Visueel", "Motorisch"] },
-    // Principe 2: Bedienbaar
-    "2.1.1": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.1.2": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.1.4": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.2.1": { principe: "Bedienbaar", niveau: "A", beperking: ["Visueel", "Motorisch", "Cognitief"] },
-    "2.2.2": { principe: "Bedienbaar", niveau: "A", beperking: ["Visueel", "Cognitief"] },
-    "2.3.1": { principe: "Bedienbaar", niveau: "A", beperking: ["Visueel"] },
-    "2.4.1": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.4.2": { principe: "Bedienbaar", niveau: "A", beperking: ["Visueel", "Cognitief"] },
-    "2.4.3": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.4.4": { principe: "Bedienbaar", niveau: "A", beperking: ["Visueel", "Cognitief"] },
-    "2.4.5": { principe: "Bedienbaar", niveau: "AA", beperking: ["Cognitief"] },
-    "2.4.6": { principe: "Bedienbaar", niveau: "AA", beperking: ["Visueel", "Cognitief"] },
-    "2.4.7": { principe: "Bedienbaar", niveau: "AA", beperking: ["Motorisch"] },
-    "2.4.11": { principe: "Bedienbaar", niveau: "AA", beperking: ["Motorisch"] },
-    "2.5.1": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.5.2": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.5.3": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch", "Visueel"] },
-    "2.5.4": { principe: "Bedienbaar", niveau: "A", beperking: ["Motorisch"] },
-    "2.5.7": { principe: "Bedienbaar", niveau: "AA", beperking: ["Motorisch"] },
-    "2.5.8": { principe: "Bedienbaar", niveau: "AA", beperking: ["Motorisch"] },
-    // Principe 3: Begrijpelijk
-    "3.1.1": { principe: "Begrijpelijk", niveau: "A", beperking: ["Visueel"] },
-    "3.1.2": { principe: "Begrijpelijk", niveau: "AA", beperking: ["Visueel"] },
-    "3.2.1": { principe: "Begrijpelijk", niveau: "A", beperking: ["Cognitief", "Motorisch"] },
-    "3.2.2": { principe: "Begrijpelijk", niveau: "A", beperking: ["Cognitief"] },
-    "3.2.3": { principe: "Begrijpelijk", niveau: "AA", beperking: ["Cognitief"] },
-    "3.2.4": { principe: "Begrijpelijk", niveau: "AA", beperking: ["Cognitief"] },
-    "3.2.6": { principe: "Begrijpelijk", niveau: "A", beperking: ["Cognitief"] },
-    "3.3.1": { principe: "Begrijpelijk", niveau: "A", beperking: ["Visueel", "Cognitief"] },
-    "3.3.2": { principe: "Begrijpelijk", niveau: "A", beperking: ["Cognitief"] },
-    "3.3.3": { principe: "Begrijpelijk", niveau: "AA", beperking: ["Cognitief"] },
-    "3.3.4": { principe: "Begrijpelijk", niveau: "AA", beperking: ["Cognitief"] },
-    "3.3.7": { principe: "Begrijpelijk", niveau: "A", beperking: ["Cognitief", "Motorisch"] },
-    "3.3.8": { principe: "Begrijpelijk", niveau: "AA", beperking: ["Cognitief"] },
-    // Principe 4: Robuust
-    "4.1.2": { principe: "Robuust", niveau: "A", beperking: ["Visueel"] },
-    "4.1.3": { principe: "Robuust", niveau: "AA", beperking: ["Visueel"] },
+    // Princip 1: Möjlig att uppfatta
+    "1.1.1": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "1.2.1": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Visuell", "Auditiv"] },
+    "1.2.2": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Auditiv"] },
+    "1.2.3": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "1.2.4": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Auditiv"] },
+    "1.2.5": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell"] },
+    "1.3.1": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "1.3.2": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "1.3.3": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "1.3.4": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Motorisk"] },
+    "1.3.5": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Kognitiv", "Motorisk"] },
+    "1.4.1": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "1.4.2": { princip: "Möjlig att uppfatta", nivå: "A", funktionsnedsättning: ["Auditiv", "Kognitiv"] },
+    "1.4.3": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell"] },
+    "1.4.4": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell"] },
+    "1.4.5": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell"] },
+    "1.4.10": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell"] },
+    "1.4.11": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell"] },
+    "1.4.12": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell", "Kognitiv"] },
+    "1.4.13": { princip: "Möjlig att uppfatta", nivå: "AA", funktionsnedsättning: ["Visuell", "Motorisk"] },
+    // Princip 2: Hanterbar
+    "2.1.1": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.1.2": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.1.4": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.2.1": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Visuell", "Motorisk", "Kognitiv"] },
+    "2.2.2": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Visuell", "Kognitiv"] },
+    "2.3.1": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "2.4.1": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.4.2": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Visuell", "Kognitiv"] },
+    "2.4.3": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.4.4": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Visuell", "Kognitiv"] },
+    "2.4.5": { princip: "Hanterbar", nivå: "AA", funktionsnedsättning: ["Kognitiv"] },
+    "2.4.6": { princip: "Hanterbar", nivå: "AA", funktionsnedsättning: ["Visuell", "Kognitiv"] },
+    "2.4.7": { princip: "Hanterbar", nivå: "AA", funktionsnedsättning: ["Motorisk"] },
+    "2.4.11": { princip: "Hanterbar", nivå: "AA", funktionsnedsättning: ["Motorisk"] },
+    "2.5.1": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.5.2": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.5.3": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk", "Visuell"] },
+    "2.5.4": { princip: "Hanterbar", nivå: "A", funktionsnedsättning: ["Motorisk"] },
+    "2.5.7": { princip: "Hanterbar", nivå: "AA", funktionsnedsättning: ["Motorisk"] },
+    "2.5.8": { princip: "Hanterbar", nivå: "AA", funktionsnedsättning: ["Motorisk"] },
+    // Princip 3: Begriplig
+    "3.1.1": { princip: "Begriplig", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "3.1.2": { princip: "Begriplig", nivå: "AA", funktionsnedsättning: ["Visuell"] },
+    "3.2.1": { princip: "Begriplig", nivå: "A", funktionsnedsättning: ["Kognitiv", "Motorisk"] },
+    "3.2.2": { princip: "Begriplig", nivå: "A", funktionsnedsättning: ["Kognitiv"] },
+    "3.2.3": { princip: "Begriplig", nivå: "AA", funktionsnedsättning: ["Kognitiv"] },
+    "3.2.4": { princip: "Begriplig", nivå: "AA", funktionsnedsättning: ["Kognitiv"] },
+    "3.2.6": { princip: "Begriplig", nivå: "A", funktionsnedsättning: ["Kognitiv"] },
+    "3.3.1": { princip: "Begriplig", nivå: "A", funktionsnedsättning: ["Visuell", "Kognitiv"] },
+    "3.3.2": { princip: "Begriplig", nivå: "A", funktionsnedsättning: ["Kognitiv"] },
+    "3.3.3": { princip: "Begriplig", nivå: "AA", funktionsnedsättning: ["Kognitiv"] },
+    "3.3.4": { princip: "Begriplig", nivå: "AA", funktionsnedsättning: ["Kognitiv"] },
+    "3.3.7": { princip: "Begriplig", nivå: "A", funktionsnedsättning: ["Kognitiv", "Motorisk"] },
+    "3.3.8": { princip: "Begriplig", nivå: "AA", funktionsnedsättning: ["Kognitiv"] },
+    // Princip 4: Robust
+    "4.1.2": { princip: "Robust", nivå: "A", funktionsnedsättning: ["Visuell"] },
+    "4.1.3": { princip: "Robust", nivå: "AA", funktionsnedsättning: ["Visuell"] },
   };
 
   document.querySelectorAll("#issues .meta").forEach((meta) => {
@@ -135,37 +135,37 @@ document.addEventListener("DOMContentLoaded", function () {
       .split(/[\s,]+/)
       .filter(Boolean);
 
-    const principes = new Set();
-    const niveaus = new Set();
-    const beperkingen = new Set();
+    const principer = new Set();
+    const nivåer = new Set();
+    const funktionsnedsättningar = new Set();
 
     numbers.forEach((num) => {
       const data = wcagData[num];
       if (data) {
-        principes.add(data.principe);
-        niveaus.add(data.niveau);
-        data.beperking.forEach((b) => beperkingen.add(b));
+        principer.add(data.princip);
+        nivåer.add(data.nivå);
+        data.funktionsnedsättning.forEach((b) => funktionsnedsättningar.add(b));
       }
     });
 
-    if (principes.size > 0) {
+    if (principer.size > 0) {
       const span = document.createElement("span");
       span.className = "type richtlijn";
-      span.innerHTML = `<b>Principe</b>: ${[...principes].join(", ")}`;
+      span.innerHTML = `<b>Princip</b>: ${[...principer].join(", ")}`;
       meta.appendChild(span);
     }
 
-    if (niveaus.size > 0) {
+    if (nivåer.size > 0) {
       const span = document.createElement("span");
       span.className = "type";
-      span.innerHTML = `<b>Niveau</b>: ${[...niveaus].sort().join(", ")}`;
+      span.innerHTML = `<b>Nivå</b>: ${[...nivåer].sort().join(", ")}`;
       meta.appendChild(span);
     }
 
-    if (beperkingen.size > 0) {
+    if (funktionsnedsättningar.size > 0) {
       const span = document.createElement("span");
       span.className = "type beperking";
-      span.innerHTML = `<b>Beperking</b>: ${[...beperkingen].join(", ")}`;
+      span.innerHTML = `<b>Funktionsnedsättning</b>: ${[...funktionsnedsättningar].join(", ")}`;
       meta.appendChild(span);
     }
   });
@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
       navigator.clipboard.writeText(url).then(() => {
         const tooltip = document.createElement("span");
         tooltip.className = "copy-tooltip";
-        tooltip.textContent = "Link gekopieerd!";
+        tooltip.textContent = "Länk kopierad!";
         const heading = link.closest("h2, h3");
         heading.appendChild(tooltip);
         setTimeout(() => tooltip.remove(), 2000);
@@ -196,13 +196,13 @@ document.addEventListener("DOMContentLoaded", function () {
   exportBtn.addEventListener("click", function () {
     const csvRows = [
       [
-        "Pagina",
-        "Issue",
+        "Sida",
+        "Problem",
         "WCAG",
-        "Impact",
-        "Type",
-        "Beschrijving",
-        "Oplossing",
+        "Påverkan",
+        "Typ",
+        "Beskrivning",
+        "Lösning",
       ],
     ];
 
@@ -213,8 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const pageTitle =
         article.querySelector("h2.issue-title")?.textContent.trim() || "";
       let currentIssue = "";
-      let beschrijving = "";
-      let oplossing = "";
+      let beskrivning = "";
+      let lösning = "";
       let type = "";
       let impact = "";
       let wcag = "";
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function () {
         article.querySelectorAll("h3, h4, p, figure, div.meta"),
       );
 
-      let parsingOplossing = false;
+      let parsingLösning = false;
 
       nodes.forEach((el) => {
         if (el.tagName === "H3") {
@@ -236,15 +236,15 @@ document.addEventListener("DOMContentLoaded", function () {
               wcag,
               impact,
               type,
-              beschrijving.trim(),
-              oplossing.trim(),
+              beskrivning.trim(),
+              lösning.trim(),
             ]);
-            beschrijving = "";
-            oplossing = "";
+            beskrivning = "";
+            lösning = "";
             type = "";
             impact = "";
             wcag = "";
-            parsingOplossing = false;
+            parsingLösning = false;
           }
           currentIssue = el.textContent.trim();
         }
@@ -259,25 +259,25 @@ document.addEventListener("DOMContentLoaded", function () {
             );
             if (impactSpan) {
               impact = impactSpan.textContent
-                .replace(/Impact\s*:?\s*/i, "")
+                .replace(/Påverkan\s*:?\s*/i, "")
                 .trim();
             }
             if (typeSpan) {
-              type = typeSpan.textContent.replace(/Type\s*:?\s*/i, "").trim();
+              type = typeSpan.textContent.replace(/Typ\s*:?\s*/i, "").trim();
             }
             if (wcagSpan) {
               wcag = wcagSpan.textContent.replace(/WCAG\s*:?\s*/i, "").trim();
             }
           } else if (
             el.tagName === "H4" &&
-            el.textContent.trim().toLowerCase().startsWith("oplossing")
+            el.textContent.trim().toLowerCase().startsWith("lösning")
           ) {
-            parsingOplossing = true;
+            parsingLösning = true;
           } else if (el.tagName === "P" || el.tagName === "FIGURE") {
-            if (parsingOplossing) {
-              oplossing += el.innerText.trim() + " ";
+            if (parsingLösning) {
+              lösning += el.innerText.trim() + " ";
             } else {
-              beschrijving += el.innerText.trim() + " ";
+              beskrivning += el.innerText.trim() + " ";
             }
           }
         }
@@ -291,14 +291,14 @@ document.addEventListener("DOMContentLoaded", function () {
           wcag,
           impact,
           type,
-          beschrijving.trim(),
-          oplossing.trim(),
+          beskrivning.trim(),
+          lösning.trim(),
         ]);
       }
     });
 
     if (csvRows.length === 1) {
-      alert("Geen bevindingen gevonden.");
+      alert("Inga fynd hittades.");
       return;
     }
 
@@ -311,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "bevindingen.csv");
+    link.setAttribute("download", "fynd.csv");
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
@@ -345,10 +345,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const typeSpan = issue.querySelector(".meta .type");
     if (typeSpan) {
       const text = typeSpan.textContent.toLowerCase();
-      issue.dataset.type = text.includes("techniek")
-        ? "techniek"
-        : text.includes("content")
-          ? "content"
+      issue.dataset.type = text.includes("teknik")
+        ? "teknik"
+        : text.includes("innehåll")
+          ? "innehåll"
           : "unknown";
     } else {
       issue.dataset.type = "unknown";
@@ -358,11 +358,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const impactSpan = issue.querySelector(".meta .impact");
     if (impactSpan) {
       const impactText = impactSpan.textContent
-        .replace(/impact\s*:\s*/i, "")
+        .replace(/påverkan\s*:\s*/i, "")
         .trim()
         .toLowerCase();
 
-      const allowed = ["groot", "medium", "klein", "advies"];
+      const allowed = ["stor", "medel", "liten", "rekommendation"];
       issue.dataset.impact = allowed.includes(impactText)
         ? impactText
         : "unknown";
@@ -406,11 +406,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.className = "resolved-checkbox";
-      checkbox.setAttribute("aria-label", "Hele pagina is opgelost");
+      checkbox.setAttribute("aria-label", "Hela sidan är åtgärdad");
 
       const span = document.createElement("span");
       span.className = "resolved-label";
-      span.innerHTML = '<i class="fa-solid fa-circle-check"></i> Hele pagina is opgelost';
+      span.innerHTML = '<i class="fa-solid fa-circle-check"></i> Hela sidan är åtgärdad';
 
       label.appendChild(checkbox);
       label.appendChild(span);
@@ -418,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Check initial state: als alle nested issues opgelost zijn
       function updatePageCheckbox() {
-        const allResolved = nestedIssues.every((ni) => ni.dataset.status === "opgelost");
+        const allResolved = nestedIssues.every((ni) => ni.dataset.status === "åtgärdad");
         checkbox.checked = allResolved;
       }
 
@@ -431,18 +431,18 @@ document.addEventListener("DOMContentLoaded", () => {
           if (checkbox.checked) {
             state.issues[h3.id] = true;
             ni.classList.add("is-resolved");
-            ni.dataset.status = "opgelost";
+            ni.dataset.status = "åtgärdad";
             if (cb) cb.checked = true;
             if (!h3.querySelector(".sr-only")) {
               const srSpan = document.createElement("span");
               srSpan.className = "sr-only";
-              srSpan.textContent = "(opgelost)";
+              srSpan.textContent = "(åtgärdad)";
               h3.appendChild(srSpan);
             }
           } else {
             delete state.issues[h3.id];
             ni.classList.remove("is-resolved");
-            ni.dataset.status = "open";
+            ni.dataset.status = "öppen";
             if (cb) cb.checked = false;
             const srSpan = h3.querySelector(".sr-only");
             if (srSpan) srSpan.remove();
@@ -465,12 +465,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!slug) return;
 
     // Set data-status
-    issue.dataset.status = resolvedState.issues[slug] ? "opgelost" : "open";
+    issue.dataset.status = resolvedState.issues[slug] ? "åtgärdad" : "öppen";
     if (resolvedState.issues[slug]) {
       issue.classList.add("is-resolved");
       const srSpan = document.createElement("span");
       srSpan.className = "sr-only";
-      srSpan.textContent = "(opgelost)";
+      srSpan.textContent = "(åtgärdad)";
       h3.appendChild(srSpan);
     }
 
@@ -478,18 +478,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const label = document.createElement("label");
     label.className = "resolved-toggle";
     label.hidden = true;
-    label.title = "Markeer als opgelost";
+    label.title = "Markera som åtgärdad";
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "resolved-checkbox";
     checkbox.dataset.issueSlug = slug;
     checkbox.checked = !!resolvedState.issues[slug];
-    checkbox.setAttribute("aria-label", "Dit issue is opgelost");
+    checkbox.setAttribute("aria-label", "Detta problem är åtgärdat");
 
     const span = document.createElement("span");
     span.className = "resolved-label";
-    span.innerHTML = '<i class="fa-solid fa-circle-check"></i> Dit issue is opgelost';
+    span.innerHTML = '<i class="fa-solid fa-circle-check"></i> Detta problem är åtgärdat';
 
     label.appendChild(checkbox);
     label.appendChild(span);
@@ -500,17 +500,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (checkbox.checked) {
         state.issues[slug] = true;
         issue.classList.add("is-resolved");
-        issue.dataset.status = "opgelost";
+        issue.dataset.status = "åtgärdad";
         if (!h3.querySelector(".sr-only")) {
           const srSpan = document.createElement("span");
           srSpan.className = "sr-only";
-          srSpan.textContent = "(opgelost)";
+          srSpan.textContent = "(åtgärdad)";
           h3.appendChild(srSpan);
         }
       } else {
         delete state.issues[slug];
         issue.classList.remove("is-resolved");
-        issue.dataset.status = "open";
+        issue.dataset.status = "öppen";
         const srSpan = h3.querySelector(".sr-only");
         if (srSpan) srSpan.remove();
       }
@@ -534,16 +534,16 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateCounts() {
     const typeCounts = {
       all: issues.length,
-      techniek: 0,
-      content: 0,
+      teknik: 0,
+      innehåll: 0,
     };
 
     const impactCounts = {
       all: issues.length,
-      groot: 0,
-      medium: 0,
-      klein: 0,
-      advies: 0,
+      stor: 0,
+      medel: 0,
+      liten: 0,
+      rekommendation: 0,
     };
 
     issues.forEach((issue) => {
@@ -570,7 +570,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateDashboard() {
     const divIssues = issues.filter((i) => i.tagName !== "ARTICLE");
     const total = divIssues.length;
-    const resolved = divIssues.filter((i) => i.dataset.status === "opgelost").length;
+    const resolved = divIssues.filter((i) => i.dataset.status === "åtgärdad").length;
     const pct = total > 0 ? Math.round((resolved / total) * 100) : 0;
 
     document.querySelectorAll(".resolved-count").forEach((el) => el.textContent = resolved);

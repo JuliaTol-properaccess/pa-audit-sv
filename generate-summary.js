@@ -4,15 +4,15 @@ const path = require("path");
 const contentRoots = ["./src/reports", "./src/archived-reports"];
 const distRoot = "./dist";
 
-const impactRegex = /Impact[^:]*:\s*(Klein|Medium|Groot)/gi;
-const typeRegex = /Type[^:]*:\s*(Content|Techniek)/gi;
+const impactRegex = /Påverkan[^:]*:\s*(Liten|Medel|Stor)/gi;
+const typeRegex = /Typ[^:]*:\s*(Innehåll|Teknik)/gi;
 const wcagRegex = /WCAG[^:]*:\s*([\d\.,\s]+)/gi;
 
 // === 1. Analyseer Markdown-bestanden ===
 function analyzeMarkdown(projectPath) {
   const summary = {
-    impact: { Klein: 0, Medium: 0, Groot: 0 },
-    type: { Content: 0, Techniek: 0 },
+    impact: { Liten: 0, Medel: 0, Stor: 0 },
+    type: { Innehåll: 0, Teknik: 0 },
     wcag: [],
   };
 
@@ -160,12 +160,12 @@ function injectCharts(indexPath, summary) {
   <div class="charts">
     <figure class="chart">
       <canvas id="impactChart"></canvas>
-      <figcaption>Impact — Klein: ${summary.impact.Klein}, Medium: ${summary.impact.Medium}, Groot: ${summary.impact.Groot}</figcaption>
+      <figcaption>Påverkan — Liten: ${summary.impact.Liten}, Medel: ${summary.impact.Medel}, Stor: ${summary.impact.Stor}</figcaption>
     </figure>
 
     <figure class="chart">
       <canvas id="typeChart"></canvas>
-      <figcaption>Type — Content: ${summary.type.Content}, Techniek: ${summary.type.Techniek}</figcaption>
+      <figcaption>Typ — Innehåll: ${summary.type.Innehåll}, Teknik: ${summary.type.Teknik}</figcaption>
     </figure>
   </div>
 
@@ -175,12 +175,12 @@ function injectCharts(indexPath, summary) {
     const typeCtx = document.getElementById('typeChart');
     new Chart(impactCtx, {
       type: 'bar',
-      data: { labels: ['Klein', 'Medium', 'Groot'], datasets: [{ data: [${summary.impact.Klein}, ${summary.impact.Medium}, ${summary.impact.Groot}], backgroundColor: ['#D97708','#2663EB','#C00000'] }] },
+      data: { labels: ['Liten', 'Medel', 'Stor'], datasets: [{ data: [${summary.impact.Liten}, ${summary.impact.Medel}, ${summary.impact.Stor}], backgroundColor: ['#D97708','#2663EB','#C00000'] }] },
       options: { responsive: true, plugins: { legend: { display: false } } }
     });
     new Chart(typeCtx, {
       type: 'pie',
-      data: { labels: ['Content', 'Techniek'], datasets: [{ data: [${summary.type.Content}, ${summary.type.Techniek}], backgroundColor: ['#2663EB','#C00000'] }] },
+      data: { labels: ['Innehåll', 'Teknik'], datasets: [{ data: [${summary.type.Innehåll}, ${summary.type.Teknik}], backgroundColor: ['#2663EB','#C00000'] }] },
       options: { responsive: true, plugins: { legend: { display: false } } }
     });
   </script>`;
