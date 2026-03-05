@@ -70,7 +70,7 @@ module.exports = function (eleventyConfig) {
 
 
   return {
-    pathPrefix: "/",
+    pathPrefix: "/pa-audit-sv/",
     dir: {
       input: "src",
       output: "dist",
