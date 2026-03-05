@@ -4,10 +4,10 @@ layout: base
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/_assets/css/report.css">
+<link rel="stylesheet" href="{{ '/_assets/css/report.css' | url }}">
 
-<link rel="stylesheet" href="/_assets/css/icons.css">
-<script src="/_assets/main.js"></script>
+<link rel="stylesheet" href="{{ '/_assets/css/icons.css' | url }}">
+<script src="{{ '/_assets/main.js' | url }}"></script>
 
 {% set issueList = collections[page.fileSlug] %}
 {% set tipsListName %}{{ page.fileSlug }}-tips{% endset %}
@@ -16,7 +16,7 @@ layout: base
 <section id="start" class="container">
   <div class="sidebar">
   <a href="https://www.properaccess.nl/">
-   <img class="pa_logo" src="/_assets/images/logo_P3.svg" alt="Proper Access digital tillgänglighet" class="logo">
+   <img class="pa_logo" src="{{ '/_assets/images/logo_P3.svg' | url }}" alt="Proper Access digital tillgänglighet" class="logo">
 </a>
     <ul class="sidemenu contactinfo">
       <li><i class="fa-solid fa-location-dot" style="color: #aaa;"></i> Willemserf 20</li>
