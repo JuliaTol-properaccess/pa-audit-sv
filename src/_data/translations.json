@@ -1,0 +1,322 @@
+{
+  "report_for": {
+    "en": "Accessibility Conformance Report for ",
+    "nl": "Rapport: toegankelijkheid van ",
+    "sv": "Tillgänglighetsgranskningsrapport för ",
+    "pt-br": "Relatório de conformidade de acessibilidade para ",
+    "es": "Informe de accesibilidad para ",
+    "fi": "Saavutettavuusraportti: ",
+    "de": "Barrierefreiheits Konformitäts-Bericht für "
+  },
+  "evaluated_by": {
+    "en": "Evaluated by",
+    "nl": "Onderzocht door",
+    "sv": "Utvärderad av",
+    "pt-br": "Avaliado por",
+    "es": "Evaluado por",
+    "fi": "Arvioija",
+    "de": "Evaluiert von"
+  },
+  "commissioned_by": {
+    "en": "Commissioned by",
+    "nl": "In opdracht van",
+    "sv": "På uppdrag av",
+    "pt-br": "Comissionado por",
+    "es": "Solicitado por",
+    "fi": "Tilaaja",
+    "de": "Beauftragt von"
+  },
+   "platform": {
+    "en": "Software by",
+    "nl": "Leverancier techniek",
+    "sv": "Teknikleverantör"
+  },
+  "target": {
+    "en": "Target",
+    "nl": "Conformiteitsdoel",
+    "sv": "Målstandard",
+    "pt-br": "Alvo",
+    "es": "Objetivo",
+    "fi": "Tavoitetaso",
+    "de": "Grundlage"
+  },
+  "date": {
+    "en": "Date",
+    "nl": "Datum",
+    "sv": "Datum",
+    "pt-br": "Data",
+    "es": "Fecha",
+    "fi": "Päivämäärä",
+    "de": "Datum"
+  },
+  "special_requirements": {
+    "en": "Special requirements",
+    "nl": "Speciale eisen",
+    "sv": "Särskilda krav",
+    "pt-br": "Requisitos especiais",
+    "es": "Requerimientos especiales",
+    "fi": "Erityisvaatimukset",
+    "de": "Besondere Anforderungen"
+  },
+  "scope": {
+    "en": "Scope",
+    "nl": "Scope",
+    "sv": "Omfattning",
+    "pt-br": "Escopo",
+    "es": "Alcance",
+    "fi": "Laajuus",
+    "de": "Anwendungsbereich"
+  },
+  "scope_items": {
+    "en": "Pages",
+    "nl": "Pagina's",
+    "sv": "Sidor",
+    "pt-br": "Páginas",
+    "es": "Páginas",
+    "fi": "Sivuja",
+    "de": "Seiten"
+  },
+  "sample": {
+    "en": "Sample",
+    "nl": "Steekproef",
+    "sv": "Stickprov",
+    "pt-br": "Amostra",
+    "es": "Muestra",
+    "fi": "Otos",
+    "de": "Beispiel"
+  },
+  "representative_sample": {
+    "en": "Representative sample",
+    "nl": "Voor dit onderzoek zijn de volgende pagina's gebruikt als representatieve steekproef van de onderzochte website:",
+    "sv": "För denna granskning har följande sidor använts som ett representativt stickprov av den granskade webbplatsen:",
+    "pt-br": "Para este estudo, as seguintes páginas foram utilizadas como uma amostra representativa do site pesquisado:",
+    "es": "Muestra representativa",
+    "fi": "Edustava otos",
+    "de": "Repräsentatives Beispiel"
+  },
+  "not_in_scope": {
+    "en": "Not in scope",
+    "nl": "Niet in scope",
+    "sv": "Utanför omfattningen",
+    "pt-br": "Fora do escopo",
+    "es": "Fuera de alcance",
+    "fi": "Auditointiin kuulumattomat",
+    "de": "Nicht im Anwendungsbereich enthalten"
+  },
+  "issue": {
+    "en": "Issue",
+    "nl": "Bevinding",
+    "sv": "Fynd",
+    "pt-br": "Problema",
+    "es": "Problema",
+    "fi": "Ongelma",
+    "de": "Problem"
+  },
+  "issues": {
+    "en": "Issues",
+    "nl": "Bevindingen",
+    "sv": "Fynd",
+    "pt-br": "Problemas",
+    "es": "Problemas",
+    "fi": "Ongelmakohdat",
+    "de": "Probleme"
+  },
+  "wcag_criterion": {
+    "en": "WCAG criterion",
+    "nl": "WCAG criterium",
+    "sv": "WCAG-kriterium",
+    "pt-br": "Critério WCAG",
+    "es": "Criterio WCAG",
+    "fi": "WCAG-kriteeri",
+    "de": "WCAG Kriterium"
+  },
+  "severity": {
+    "en": "Severity",
+    "nl": "Ernst",
+    "sv": "Allvarlighetsgrad",
+    "pt-br": "Severidade",
+    "es": "Severidad",
+    "fi": "Kriittisyys",
+    "de": "Gewichtung"
+  },
+  "difficulty": {
+    "en": "Difficulty",
+    "nl": "Complexiteit",
+    "sv": "Komplexitet",
+    "pt-br": "Dificuldade",
+    "es": "Complejidad",
+    "fi": "Vaikeus",
+    "de": "Schwierigkeit"
+  },
+  "executive_summary": {
+    "en": "Executive summary",
+    "nl": "Samenvatting",
+    "sv": "Sammanfattning",
+    "pt-br": "Sumário executivo",
+    "es": "Resumen ejecutivo",
+    "fi": "Yhteenveto",
+    "de": "Kurzfassung"
+  },
+  "about_this_report": {
+    "en": "About this report",
+    "nl": "Toelichting bij dit rapport",
+    "sv": "Om denna rapport",
+    "pt-br": "Sobre esse relatório",
+    "es": "Acerca de este informe",
+    "fi": "Tietoja raportista",
+    "de": "Über diesen Report"
+  },
+  "principle": {
+    "en": "Principle",
+    "nl": "Principe",
+    "sv": "Princip",
+    "pt-br": "Princípio",
+    "es": "Principio",
+    "fi": "Periaate",
+    "de": "Prinzip"
+  },
+  "perceivable": {
+    "en": "Perceivable",
+    "nl": "Waarneembaar",
+    "sv": "Möjlig att uppfatta",
+    "pt-br": "Perceptível",
+    "es": "Percibible",
+    "fi": "Havaittava",
+    "de": "Wahrnehmbar"
+  },
+  "operable": {
+    "en": "Operable",
+    "nl": "Bedienbaar",
+    "sv": "Hanterbar",
+    "pt-br": "Operável",
+    "es": "Operable",
+    "fi": "Hallittava",
+    "de": "Bedienbar"
+  },
+  "understandable": {
+    "en": "Understandable",
+    "nl": "Begrijpelijk",
+    "sv": "Begriplig",
+    "pt-br": "Compreensível",
+    "es": "Entendible",
+    "fi": "Ymmärrettävä",
+    "de": "Verständlich"
+  },
+  "robust": {
+    "en": "Robust",
+    "nl": "Robuust",
+    "sv": "Robust",
+    "pt-br": "Robusto",
+    "es": "Robusto",
+    "fi": "Toimintavarma",
+    "de": "Robust"
+  },
+  "results_per_principle": {
+    "en": "Results by principle",
+    "nl": "Resultaten per principe",
+    "sv": "Resultat per princip",
+    "pt-br": "Resultados por princípio",
+    "es": "Resultados por principio",
+    "fi": "Tulokset periaatteittain",
+    "de": "Ergebnisse je Prinzip"
+  },
+  "total": {
+    "en": "Total",
+    "nl": "Totaal",
+    "sv": "Totalt",
+    "pt-br": "Total",
+    "es": "Total",
+    "fi": "Yhteensä",
+    "de": "Gesamt"
+  },
+  "of": {
+    "en": "of",
+    "nl": "uit",
+    "sv": "av",
+    "pt-br": "de",
+    "es": "de",
+    "fi": "/",
+    "de": "von"
+  },
+  "all_pages": {
+    "en": "All pages",
+    "nl": "Alle pagina's",
+    "sv": "Alla sidor",
+    "pt-br": "Todas as páginas",
+    "es": "Todas las páginas",
+    "fi": "Kaikki sivut",
+    "de": "Alle Seiten betreffend"
+  },
+  "accessibility_support": {
+    "en": "Accessibility support",
+    "nl": "Ondersteuning",
+    "sv": "Tillgänglighetsstöd",
+    "pt-br": "Suporte de acessibilidade",
+    "es": "Soporte de accesibilidad",
+    "fi": "Tuki",
+    "de": "Unterstützung von Barrierefreiheit"
+  },
+  "technologies_used": {
+    "en": "Technologies used",
+    "nl": "Gebruikte technologieën",
+    "sv": "Använda tekniker",
+    "pt-br": "Tecnologias utilizadas",
+    "es": "Tecnologías utilizadas",
+    "fi": "Käytetyt teknologiat",
+    "de": "Eingesetzte Technologien"
+  },
+  "accessibility_support_explanation": {
+    "en": "The audited website should work in at least the following browsers and assistive technologies: ",
+    "nl": "De onderzochte website zou minimaal moeten kunnen worden gebruikt met de volgende browsers en hulptechnologieën:",
+    "sv": "Den granskade webbplatsen bör fungera med åtminstone följande webbläsare och hjälpmedel:",
+    "pt-br": "O site auditado deve funcionar pelo menos nos seguintes navegadores e tecnologias assistivas: ",
+    "es": "El sitio web auditado debe trabajar en al menos los siguientes navegadores y tecnologías de asistencia: ",
+    "fi": "Auditoidun sivuston tulisi toimia seuraavilla selaimilla ja avustavilla teknologioilla: ",
+    "de": "Die analysierte Webseite sollte zumindest die zugängliche Nutzung mit den folgenden Internetzugangsprogrammen (Browser) und assistiven Technologien ermöglichen: "
+  },
+  "technologies_explanation": {
+    "en": "The audited web page relies on the following technologies: ",
+    "nl": "De onderzochte maakt gebruik van de volgende technologieën: ",
+    "sv": "Den granskade webbsidan använder följande tekniker: ",
+    "pt-br": "A página da web auditada conta com as seguintes tecnologias: ",
+    "es": "La página web auditada utiliza en las siguientes tecnologías: ",
+    "fi": "Auditoitu sivusto käyttää seuraavia teknologioita: ",
+    "de": "Die analysierte Webseite setzt auf die folgenden Technologien: "
+  },
+  "tip": {
+    "en": "Tip",
+    "nl": "Tip",
+    "sv": "Tips",
+    "pt-br": "Dica",
+    "es": "Consejo",
+    "fi": "Vinkki",
+    "de": "Tipp"
+  },
+  "tips": {
+    "en": "Tips",
+    "nl": "Tips",
+    "sv": "Tips",
+    "pt-br": "Dicas",
+    "es": "Sugerencias",
+    "fi": "Vinkit",
+    "de": "Tipps"
+  },
+  "external_link": {
+    "en": "external link",
+    "nl": "externe link",
+    "sv": "extern länk",
+    "pt-br": "link externo",
+    "es": "Link externo",
+    "fi": "ulkoinen linkki",
+    "de": "Externer Seitenlink"
+  },
+  "base_uri": {
+    "en": "https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1",
+    "nl": "https://www.w3.org/Translations/WCAG21-nl",
+    "sv": "https://www.w3.org/WAI/WCAG21/quickref/?versions=2.1",
+    "pt-br": "https://www.w3c.br/traducoes/wcag/wcag21-pt-BR/",
+    "es": "http://www.codexexempla.org/traducciones/pautas-accesibilidad-contenido-web-2.0.htm",
+    "fi": "https://www.w3.org/Translations/WCAG21-fi/",
+    "de": "https://www.barrierefreies-webdesign.de/richtlinien/wcag-2.1/"
+  }
+}

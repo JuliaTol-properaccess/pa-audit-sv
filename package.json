@@ -1,0 +1,35 @@
+{
+  "name": "eleventy-wcag-reporter",
+  "version": "1.0.0",
+  "description": "Eleventy project to build accessibility conformance reports in HTML from issues written in Markdown.",
+  "main": ".eleventy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx @11ty/eleventy --serve --port=1337",
+    "build": "npx @11ty/eleventy && node generate-summary.js",
+    "add-report": "node add-report.js",
+    "create-report": "node tools/create-report.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hidde/eleventy-wcag-reporter.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hidde/eleventy-wcag-reporter/issues"
+  },
+  "homepage": "https://github.com/hidde/eleventy-wcag-reporter#readme",
+  "dependencies": {
+    "eleventy-plugin-markdown-shortcode": "^0.1.2"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.0.1",
+    "copy": "^0.0.1",
+    "fs": "0.0.1-security",
+    "open-editor": "3.0.0",
+    "prompt": "1.1.0",
+    "slugify": "1.5.3"
+  }
+}

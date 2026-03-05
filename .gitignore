@@ -1,0 +1,13 @@
+.DS_Store
+.cache/
+.env
+node_modules
+dist
+pdfs
+
+/Reports/
+
+# WAT framework
+.tmp/
+credentials.json
+token.json

@@ -1,0 +1,30 @@
+---
+layout: base
+title: Rapporter
+---
+
+<div class="index-page">
+  <header class="index-header">
+    <img src="/_assets/images/logo_P3.svg" alt="Proper Access" class="index-logo">
+    <div>
+      <h1>Rapporter</h1>
+      <p class="index-subtitle">Granskningar av digital tillgänglighet</p>
+    </div>
+  </header>
+
+  <ul class="report-list">
+  {%- for report in collections.reports -%}
+    {%- if report.data.page.fileSlug !== "report_template" -%}
+    <li class="report-item">
+      <a href="{{ report.url | url }}" class="report-link">
+        <span class="report-title">{{ report.data.title }}</span>
+        <span class="report-meta">
+          <span class="report-commissioner">{{ report.data.evaluation.commissioner }}</span>
+          <span class="report-date">{{ report.data.evaluation.date }}</span>
+        </span>
+      </a>
+    </li>
+    {%- endif -%}
+  {%- endfor -%}
+  </ul>
+</div>

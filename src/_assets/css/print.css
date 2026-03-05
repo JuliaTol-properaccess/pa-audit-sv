@@ -1,0 +1,46 @@
+@media print {
+  /* Hide unnecessary elements */
+  header, footer, nav, .ads, .no-print {
+    display: none !important;
+  }
+  
+  /* Ensure the sidebar appears first */
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    order: -1; /* Moves sidebar to the top */
+  }
+  
+  .main {
+    order: 0;
+  }
+  
+  /* Improve readability */
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    background: none;
+  }
+  
+  a {
+    text-decoration: none;
+    color: black;
+    word-break: break-word;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    word-break: break-word;
+  }
+  
+  /* Remove background colors and images */
+  * {
+    background: none !important;
+    color: black !important;
+  }
+}

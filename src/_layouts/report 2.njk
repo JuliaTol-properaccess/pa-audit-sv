@@ -1,0 +1,211 @@
+---
+layout: base
+---
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../_assets/css/report.css">
+
+<script src="https://kit.fontawesome.com/98ae1ff747.js" crossorigin="anonymous"></script>
+<script src="../../_assets/main.js"></script>
+
+{% set issueList = collections[page.fileSlug] %}
+{% set tipsListName %}{{ page.fileSlug }}-tips{% endset %}
+{% set tipsList = collections[tipsListName] %}
+
+<section id="start" class="container">
+  <div class="sidebar">
+  <a href="https://www.properaccess.nl/">
+   <img class="pa_logo" src="../../_assets/images/logo_P3.svg" alt="Proper Access digitale toegankelijkheid" class="logo">
+</a>
+    <ul class="sidemenu contactinfo">
+      <li><i class="fa-solid fa-location-dot" style="color: #aaa;"></i> Willemserf 20</li>
+      <li><i class="fa-solid fa-location-dot" style="color: #aaa;"></i> 3755XK Eemnes</li>
+      <li><i class="fa-solid fa-location-dot" style="color: #aaa;"></i> Nederland</li>
+      <li><i class="fa-solid fa-phone" style="color: #aaa;"></i> 0031628742275</li>
+      <li><i class="fa-solid fa-envelope" style="color: #aaa;"></i> contact@properaccess.nl</li>
+      <li><i class="fa-solid fa-building-columns" style="color: #aaa;"></i> KvK: 95350985</li>
+      <li><i class="fa-solid fa-building-columns" style="color: #aaa;"></i> OB: 867096755B01</li>
+    </ul>
+
+    <h2>Het rapport</h2>
+    <ul class="sidemenu">
+      <li><a href="#title">Begin</a></li>
+      <li><a href="#summary">Samenvatting</a></li>
+      <li><a href="#explanation">Over dit onderzoek</a></li>
+      <li><a href="#scope">Scope van het onderzoek</a></li>
+      <li><a href="#sample">Steekproef</a></li>
+      <li><a href="#issues">De bevindingen</a></li>
+    </ul>
+
+   <h3>Direct naar gevonden issues</h3>
+      
+      <ul class="sidemenu">
+      {% for issue in issueList %}
+          {% if issue.fileSlug !== page.fileSlug %}
+          <li><a href="#{{ issue.data.title  | slugify }}">{{ issue.data.title }}</a> </li>
+          {% endif %}
+        {% endfor %}
+      </ul>{# #sidebar #}
+    </div> 
+
+
+  <div class="main">
+    <h1 id="title">{{ title }}</h1>
+    <div class="box">
+      <section class="top">
+
+        <section id="summary">
+          <div class="container">
+            <div class="text">
+              <h2>Samenvatting</h2>
+              {% markdown "/src/reports/" + page.fileSlug + "/summary.md" %}
+            </div>
+            <div class="illustration">
+            <h2>In opdracht van:</h2>
+              <img src="images/opdrachtgever.png" alt="Logo van {{ evaluation.commissioner or 'de opdrachtgever' }}">
+            </div>
+            </div>
+            <div>
+                {% markdown "/src/reports/" + page.fileSlug + "/result.md" %}
+            </div>
+        </section> {# #summary #}
+
+        <section id="metadata">
+          <div class="column">
+            <dl>
+              <dt>Onderzocht door:</dt>
+              <dd>{{ evaluation.evaluator }}</dd>
+              <dt>In opdracht van:</dt>
+              <dd>{{ evaluation.commissioner }}</dd>
+
+              {% if evaluation.platform %}
+              <dt>Leverancier techniek:</dt>
+              <dd>{{ evaluation.platform }}</dd>
+            {% endif %}
+
+              <dt>Datum rapport:</dt>
+              <dd>{{ evaluation.date }}</dd>
+            </dl>
+          </div>
+          <div class="column">
+            <dl>
+
+             {% set wcagVersion = evaluation.wcag_version or '2.2' %}
+              <dt>Standaard:</dt>
+              <dd>
+                <a href="https://www.w3.org/TR/WCAG{{ wcagVersion | replace('.', '') }}/">
+                  WCAG {{ wcagVersion }}
+                </a>
+              </dd>
+              
+              <dt>Methodologie</dt>
+              <dd><a href="https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/">WCAG-EM</a></dd>
+              {% if evaluation.special_requirements %}
+              <dt>{{ translations.special_requirements[language] }}</dt>
+              <dd>{{ evaluation.special_requirements }}</dd>
+              {% endif %}
+            </dl>
+          </div>
+        </section>  {# #metadata #}
+    </section> {# #top #}
+
+    <section id="scope">
+      <div class="accordion"> {# #scope #}
+        <details>
+          <summary>Scope van het onderzoek</summary>
+            <div>
+              {% if scope %}
+              <ul>
+                {% for scope in scope %}
+                <li>{{ scope }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+              {% if out_of_scope %}
+              <p>{{ translations.not_in_scope[language] }}:
+              <ul>
+                {% for out_of_scope in out_of_scope %}
+                <li>{{ out_of_scope }}</li>
+                {% endfor %}
+                {% endif %}
+              </ul>
+             </div>
+        </details>
+      </div>       
+
+      <div class="accordion"> {# #basisnuveau #}
+        <details>
+          <summary>Basisniveau toegankelijkheidsondersteuning</summary>
+            <div>
+              <ul>
+                {% for baseline in baseline %}
+                <li>{{ baseline }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+        </details>
+      </div>
+
+      <div class="accordion"> {# #technologies #}
+       <details>
+          <summary>Technologieën van de website</summary>
+            <div>
+              <ul>
+                {% for technology in technologies %}
+                <li>{{ technology }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+        </details> 
+      </div>   
+    </section> {# #scope #}
+
+    <section id="explanation">
+      <div class="accordion">
+        <details>
+          <summary>Over dit onderzoek</summary>
+          <div>
+          {% markdown "/src/_shared-content/" + language + "/about-this-report.md" %}
+          </div>
+        </details>
+      </div> {# #about #} 
+    </section> {# #explanation #}
+
+ <section id="sample">
+  <div class="accordion">
+    <details open>
+      <summary>Steekproef</summary>
+      <div class="sample-content">
+        Zie de lijst onder "Direct naar gevonden issues".
+      </div>
+    </details>
+  </div>
+</section>
+
+
+  </div> {# #box #}
+
+<h1 class="meat">Gevonden problemen per pagina</h1> 
+
+<div class="container filters">
+  <button id="exportCsvBtn">Exporteer bevindingen</button>
+</div>
+
+    <section id="issues">  
+    {% for issue in issueList %}
+  
+        {% if issue.fileSlug !== page.fileSlug %}
+        <article class="issue" id="{{ issue.data.title | slugify }}">
+        <div class="issue-meta">
+          <h2 class="issue-title">{{ issue.data.title }}</h2>
+          <p>{{ issue.data.sc_text }}</p>
+
+        </div>
+          {{ issue.templateContent | safe }}
+        </article>
+        {% endif %}
+      {% endfor %}
+    </section>
+
+    </div>

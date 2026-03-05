@@ -1,0 +1,1 @@
+Vi har granskat webbplatsen www.luchtmeetnet.nl mellan den 1 och 16 februari 2026. För närvarande har en del av framgångskriterierna bedömts som uppfyllda. I denna rapport kan du läsa vilka punkter som fortfarande behöver förbättras och hur dessa kan åtgärdas.
