@@ -23,6 +23,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
   sections.forEach((section) => observer.observe(section));
 
+  // === Paginatitel linken naar externe URL ===
+  document.querySelectorAll("#issues > article.issue").forEach((article) => {
+    const paragraphs = article.querySelectorAll("p");
+    for (const p of paragraphs) {
+      const text = p.textContent.trim();
+      if (text.startsWith("Länk till sidan:")) {
+        const link = p.querySelector("a");
+        if (!link) continue;
+        const url = link.href;
+
+        // Update h2 title link to point to external URL
+        const titleLink = article.querySelector("h2.issue-title a");
+        if (titleLink) {
+          titleLink.href = url;
+          titleLink.target = "_blank";
+          titleLink.rel = "noopener";
+          // Replace link icon with external link SVG
+          const icon = titleLink.querySelector(".fa-link");
+          if (icon) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 16 16");
+            svg.setAttribute("width", "12");
+            svg.setAttribute("height", "12");
+            svg.setAttribute("aria-hidden", "true");
+            svg.setAttribute("class", "icon-external");
+            svg.innerHTML = '<path fill="currentColor" d="M9 1h6v6h-2V4.4L7.7 9.7 6.3 8.3 11.6 3H9V1zM3 3h4v2H3v8h8V9h2v6H1V3h2z"/>';
+            icon.replaceWith(svg);
+          }
+        }
+
+        // Hide the "Länk till sidan" paragraph
+        p.hidden = true;
+        break;
+      }
+    }
+  });
+
   // === Nummering toevoegen aan <h3> binnen #issues ===
   let teller = 1;
   const issueHeaders = document.querySelectorAll("#issues h3");
@@ -37,25 +74,32 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // === Permalink-links toevoegen aan h3's binnen .issue ===
+  let issueCounter = 0;
   document.querySelectorAll("#issues .issue h3").forEach((header) => {
-    const slug = header.textContent
-      .trim()
-      .toLowerCase()
-      .replace(/[^\w]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-    header.id = slug;
+    issueCounter++;
+    const nrMatch = header.textContent.match(/Issue nr\.\s*(\d+)/);
+    const issueNr = nrMatch ? nrMatch[1] : issueCounter;
+    const anchorId = "issue-" + issueNr;
+
+    // Set ID on parent div.issue for anchor scrolling
+    const parentIssue = header.closest("div.issue");
+    if (parentIssue) parentIssue.id = anchorId;
+    header.id = anchorId + "-h3";
 
     const text = header.textContent;
     header.textContent = "";
 
     const link = document.createElement("a");
-    link.href = `#${slug}`;
+    link.href = `#${anchorId}`;
     link.textContent = text;
 
-    const icon = document.createElement("i");
-    icon.className = "fa-solid fa-link";
-    icon.setAttribute("aria-hidden", "true");
-    link.appendChild(icon);
+    const btn = document.createElement("button");
+    btn.className = "permalink-btn";
+    btn.dataset.anchor = anchorId;
+    btn.title = "Kopiera länk till detta fynd";
+    btn.setAttribute("aria-label", "Kopiera länk till fynd " + issueNr);
+    btn.innerHTML = '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M7.8 11.1l-1.9 1.9a2 2 0 0 1-2.8-2.8l2.8-2.8a2 2 0 0 1 2.8 0 .7.7 0 0 0 1-1 3.4 3.4 0 0 0-4.8 0L2.1 9.2a3.4 3.4 0 0 0 4.8 4.8l1.9-1.9a.7.7 0 0 0-1-1zm6.1-8.2a3.4 3.4 0 0 0-4.8 0L7.2 4.8a.7.7 0 0 0 1 1l1.9-1.9a2 2 0 0 1 2.8 2.8l-2.8 2.8a2 2 0 0 1-2.8 0 .7.7 0 0 0-1 1 3.4 3.4 0 0 0 4.8 0l2.8-2.8a3.4 3.4 0 0 0 0-4.8z"/></svg>';
+    link.appendChild(btn);
 
     header.appendChild(link);
   });
@@ -170,23 +214,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // === Permalink kopiëren bij klik op link-icoon ===
-  document.querySelectorAll("#issues .fa-link").forEach((icon) => {
-    icon.addEventListener("click", (e) => {
+  // === Permalink kopiëren bij klik op permalink-btn ===
+  document.querySelectorAll(".permalink-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const link = icon.closest("a");
-      const url = link.href;
+      const anchor = btn.dataset.anchor;
+      const url = location.origin + location.pathname + "#" + anchor;
       navigator.clipboard.writeText(url).then(() => {
-        const tooltip = document.createElement("span");
-        tooltip.className = "copy-tooltip";
-        tooltip.textContent = "Länk kopierad!";
-        const heading = link.closest("h2, h3");
-        heading.appendChild(tooltip);
-        setTimeout(() => tooltip.remove(), 2000);
+        history.replaceState(null, "", "#" + anchor);
+        const tip = document.createElement("span");
+        tip.className = "copy-tooltip";
+        tip.textContent = "Länk kopierad!";
+        btn.style.position = "relative";
+        btn.appendChild(tip);
+        setTimeout(() => tip.remove(), 2000);
       });
     });
   });
+
+  // Open and scroll to issue if URL has hash
+  if (location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) {
+      setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+  }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -425,26 +478,27 @@ document.addEventListener("DOMContentLoaded", () => {
       checkbox.addEventListener("change", () => {
         const state = getResolvedState();
         nestedIssues.forEach((ni) => {
+          const niSlug = ni.id;
           const h3 = ni.querySelector("h3");
-          if (!h3 || !h3.id) return;
+          if (!niSlug) return;
           const cb = ni.querySelector(".resolved-checkbox");
           if (checkbox.checked) {
-            state.issues[h3.id] = true;
+            state.issues[niSlug] = true;
             ni.classList.add("is-resolved");
             ni.dataset.status = "åtgärdad";
             if (cb) cb.checked = true;
-            if (!h3.querySelector(".sr-only")) {
+            if (h3 && !h3.querySelector(".sr-only")) {
               const srSpan = document.createElement("span");
               srSpan.className = "sr-only";
               srSpan.textContent = "(åtgärdad)";
               h3.appendChild(srSpan);
             }
           } else {
-            delete state.issues[h3.id];
+            delete state.issues[niSlug];
             ni.classList.remove("is-resolved");
             ni.dataset.status = "öppen";
             if (cb) cb.checked = false;
-            const srSpan = h3.querySelector(".sr-only");
+            const srSpan = h3 ? h3.querySelector(".sr-only") : null;
             if (srSpan) srSpan.remove();
           }
         });
@@ -461,7 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Individuele bevinding (div.issue)
     const h3 = issue.querySelector("h3");
     if (!h3) return;
-    const slug = h3.id;
+    const slug = issue.id;
     if (!slug) return;
 
     // Set data-status

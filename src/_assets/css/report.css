@@ -330,6 +330,34 @@ select {
   100% { opacity: 0; }
 }
 
+.icon-external {
+  opacity: 0.55;
+  margin-left: 0.4em;
+  vertical-align: middle;
+}
+
+.permalink-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.2em;
+  margin-left: 0.3em;
+  opacity: 0;
+  transition: opacity 0.2s;
+  vertical-align: middle;
+}
+
+.issue h3:hover .permalink-btn,
+.permalink-btn:focus-visible {
+  opacity: 0.7;
+}
+
+.permalink-btn:hover {
+  opacity: 1;
+  color: #1f2937;
+}
+
 .pagina h3,
 .issue h3 {
   padding-top: 10px;
