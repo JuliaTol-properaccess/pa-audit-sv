@@ -5,7 +5,6 @@ layout: base
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ '/_assets/css/report.css' | url }}">
-
 <link rel="stylesheet" href="{{ '/_assets/css/icons.css' | url }}">
 <script src="{{ '/_assets/main.js' | url }}"></script>
 
@@ -13,286 +12,281 @@ layout: base
 {% set tipsListName %}{{ page.fileSlug }}-tips{% endset %}
 {% set tipsList = collections[tipsListName] %}
 
-<section id="start" class="container">
-  <div class="sidebar">
-  <a href="https://www.properaccess.nl/">
-   <img class="pa_logo" src="{{ '/_assets/images/logo_P3.svg' | url }}" alt="Proper Access digital tillgänglighet" class="logo">
-</a>
-    <ul class="sidemenu contactinfo">
-      <li><i class="fa-solid fa-location-dot" style="color: #aaa;"></i> Willemserf 20</li>
-      <li><i class="fa-solid fa-location-dot" style="color: #aaa;"></i> 3755XK Eemnes</li>
-      <li><i class="fa-solid fa-location-dot" style="color: #aaa;"></i> Nederländerna</li>
-      <li><i class="fa-solid fa-phone" style="color: #aaa;"></i> 0031628742275</li>
-      <li><i class="fa-solid fa-envelope" style="color: #aaa;"></i> contact@properaccess.nl</li>
-      <li><i class="fa-solid fa-building-columns" style="color: #aaa;"></i> KvK: 95350985</li>
-      <li><i class="fa-solid fa-building-columns" style="color: #aaa;"></i> OB: 867096755B01</li>
-    </ul>
+<div class="dashboard">
 
-    <h2>Rapporten</h2>
-    <ul class="sidemenu">
-      <li><a href="#title">Start</a></li>
-      <li><a href="#summary">Sammanfattning</a></li>
-      <li><a href="#explanation">Om denna granskning</a></li>
-      <li><a href="#scope">Granskningens omfattning</a></li>
-      <li><a href="#sample">Stickprov</a></li>
-      <li><a href="#howto">Hur fungerar denna rapport?</a></li>
-      <li><a href="#voortgang">Framsteg åtgärdade fynd</a></li>
-      <li><a href="#vragen">Frågor om rapporten?</a></li>
-    </ul>
+  {# ===== SIDEBAR ===== #}
+  <aside class="dash-sidebar">
+    <a href="https://www.properaccess.nl/" class="dash-sidebar-logo">
+      <img src="{{ '/_assets/images/logo_P3_dark.svg' | url }}" alt="Proper Access digital tillgänglighet">
+    </a>
 
-   <h3>Direkt till funna problem</h3>
+    <nav aria-label="Rapportnavigering">
+      <h2 class="dash-nav-heading">Rapporten</h2>
+      <ul class="dash-nav">
+        <li><a href="#sammanfattning">Sammanfattning</a></li>
+        <li><a href="#om-granskningen">Om denna granskning</a></li>
+        <li><a href="#fynd">Fynd</a></li>
+        <li><a href="#fragor">Frågor om rapporten?</a></li>
+      </ul>
 
-      <ul class="sidemenu">
-      {% for issue in issueList %}
-          {% if issue.fileSlug !== page.fileSlug %}
-          <li><a href="#{{ issue.data.title  | slugify }}">{{ issue.data.title }}</a> </li>
-          {% endif %}
-        {% endfor %}
-      </ul>{# #sidebar #}
+      <h2 class="dash-nav-heading">Stickprov</h2>
+      <ul class="dash-nav dash-nav-sample">
+        {%- for issue in issueList -%}
+          {%- if issue.fileSlug !== page.fileSlug -%}
+          <li><a href="#{{ issue.data.title | slugify }}">{{ issue.data.title }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+        {% if not issueList or issueList | length == 0 %}
+          <li class="dash-nav-empty">Inga sidor granskade.</li>
+        {% endif %}
+      </ul>
+    </nav>
+
+  </aside>
+
+  {# ===== MAIN CONTENT ===== #}
+  <main class="dash-main">
+
+    {# --- Top bar --- #}
+    <div class="dash-topbar">
+      <h1 id="title">{{ title }}</h1>
     </div>
 
-
-  <div class="main">
-    <h1 id="title">{{ title }}</h1>
-    <div class="box">
-      <section class="top">
-
-        <section id="summary">
-          <div class="container">
-            <div class="text">
-              <h2>Sammanfattning</h2>
-              {% markdown "/" + sourceDir + "/" + page.fileSlug + "/summary.md" %}
-            </div>
-            <div class="illustration">
-            <h2>På uppdrag av:</h2>
-              <img src="images/opdrachtgever.png" alt="Logotyp för {{ evaluation.commissioner or 'uppdragsgivaren' }}">
-            </div>
-            </div>
-            <div>
-                {% markdown "/" + sourceDir + "/" + page.fileSlug + "/result.md" %}
-            </div>
-
-        </section> {# #summary #}
-
-        <section id="metadata">
-          <div class="column">
-            <dl>
-              <dt>Granskad av:</dt>
-              <dd>{{ evaluation.evaluator }}</dd>
-              <dt>På uppdrag av:</dt>
-              <dd>{{ evaluation.commissioner }}</dd>
-
-              {% if evaluation.platform %}
-              <dt>Teknikleverantör:</dt>
-              <dd>{{ evaluation.platform }}</dd>
-            {% endif %}
-
-              <dt>Rapportdatum:</dt>
-              <dd>{{ evaluation.date }}</dd>
-            </dl>
-          </div>
-          <div class="column">
-            <dl>
-
-             {% set wcagVersion = evaluation.wcag_version or '2.2' %}
-              <dt>Standard:</dt>
-              <dd>
-                <a href="https://www.w3.org/TR/WCAG{{ wcagVersion | replace('.', '') }}/">
-                  WCAG {{ wcagVersion }}
-                </a>
-              </dd>
-
-              <dt>Metodik</dt>
-              <dd><a href="https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/">WCAG-EM</a></dd>
-              {% if evaluation.special_requirements %}
-              <dt>{{ translations.special_requirements[language] }}</dt>
-              <dd>{{ evaluation.special_requirements }}</dd>
-              {% endif %}
-            </dl>
-          </div>
-        </section>  {# #metadata #}
-    </section> {# #top #}
-
-    <section id="scope">
-      <div class="accordion"> {# #scope #}
-        <details>
-          <summary>Granskningens omfattning</summary>
-            <div>
-              {% if scope %}
-              <ul>
-                {% for scope in scope %}
-                <li>{{ scope }}</li>
-                {% endfor %}
-              </ul>
-              {% endif %}
-              {% if out_of_scope %}
-              <p>{{ translations.not_in_scope[language] }}:
-              <ul>
-                {% for out_of_scope in out_of_scope %}
-                <li>{{ out_of_scope }}</li>
-                {% endfor %}
-                {% endif %}
-              </ul>
-             </div>
-        </details>
+    {# --- Sammanfattning row --- #}
+    <section class="dash-summary-row" id="sammanfattning">
+      <div class="dash-summary-text">
+        <h2>Sammanfattning</h2>
+        {% markdown "/" + sourceDir + "/" + page.fileSlug + "/summary.md" %}
       </div>
-
-      <div class="accordion"> {# #basisnuveau #}
-        <details>
-          <summary>Basnivå tillgänglighetsstöd</summary>
-            <div>
-              <ul>
-                {% for baseline in baseline %}
-                <li>{{ baseline }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-        </details>
+      <div class="dash-summary-logo">
+        <p class="dash-summary-label">På uppdrag av</p>
+        <img src="images/opdrachtgever.png" alt="Logotyp för {{ evaluation.commissioner or 'uppdragsgivaren' }}">
       </div>
+    </section>
 
-      <div class="accordion"> {# #technologies #}
-       <details>
-          <summary>Webbplatsens tekniker</summary>
-            <div>
-              <ul>
-                {% for technology in technologies %}
-                <li>{{ technology }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-        </details>
+    {# --- Stat cards --- #}
+    {% set wcagVersion = evaluation.wcag_version or '2.2' %}
+    <section class="dash-stats">
+      <div class="stat-card stat-card-dark">
+        <span class="stat-label">Godkänt</span>
+        <span class="stat-number" id="stat-passed">-</span>
+        <span class="stat-sublabel">av 55</span>
       </div>
-    </section> {# #scope #}
+      <div class="stat-card stat-card-dark">
+        <span class="stat-label">Påverkan</span>
+        <div class="stat-breakdown">
+          <span>Liten: <strong id="stat-klein">0</strong></span>
+          <span>Medel: <strong id="stat-medium">0</strong></span>
+          <span>Stor: <strong id="stat-groot">0</strong></span>
+        </div>
+      </div>
+      <div class="stat-card stat-card-dark">
+        <span class="stat-label">Typ</span>
+        <div class="stat-breakdown">
+          <span>Innehåll: <strong id="stat-content">0</strong></span>
+          <span>Teknik: <strong id="stat-techniek">0</strong></span>
+        </div>
+      </div>
+      <div class="stat-card stat-card-dark">
+        <span class="stat-badge">WCAG {{ wcagVersion }}</span>
+      </div>
+    </section>
 
-    <section id="explanation">
+    <div class="dash-failed-sc" id="failed-sc-row">
+      <strong>Dessa SC är underkända:</strong>
+      <span class="failed-sc-list" id="failed-sc-list"></span>
+    </div>
+
+    {# --- Granskningsuppgifter (details/summary) --- #}
+    <section class="dash-info" id="om-granskningen">
       <div class="accordion">
         <details>
           <summary>Om denna granskning</summary>
           <div>
-          {% markdown "/src/_shared-content/" + language + "/about-this-report.md" %}
+            <dl class="dash-research-list">
+              <dt>Granskad av</dt>
+              <dd>{{ evaluation.evaluator }}</dd>
+              <dt>Uppdragsgivare</dt>
+              <dd>{{ evaluation.commissioner }}</dd>
+              {% if evaluation.platform %}
+              <dt>Teknikleverantör</dt>
+              <dd>{{ evaluation.platform }}</dd>
+              {% endif %}
+              <dt>Rapportdatum</dt>
+              <dd>{{ evaluation.date }}</dd>
+              <dt>Standard</dt>
+              <dd><a href="https://www.w3.org/TR/WCAG{{ wcagVersion | replace('.', '') }}/">WCAG {{ wcagVersion }}</a></dd>
+              <dt>Metodik</dt>
+              <dd><a href="https://www.w3.org/WAI/test-evaluate/conformance/wcag-em/">WCAG-EM</a></dd>
+              {% if evaluation.special_requirements %}
+              <dt>Särskilda krav</dt>
+              <dd>{{ evaluation.special_requirements }}</dd>
+              {% endif %}
+            </dl>
+
+            <h3>Granskningens omfattning</h3>
+            {% if scope %}
+            <ul>
+              {% for scope in scope %}
+              <li>{{ scope }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+            {% if out_of_scope %}
+            <p><strong>Utanför omfattningen:</strong></p>
+            <ul>
+              {% for out_of_scope in out_of_scope %}
+              <li>{{ out_of_scope }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+
+            <h3>Basnivå tillgänglighetsstöd</h3>
+            <ul>
+              {% for baseline in baseline %}
+              <li>{{ baseline }}</li>
+              {% endfor %}
+            </ul>
+
+            <h3>Webbplatsens tekniker</h3>
+            <ul>
+              {% for technology in technologies %}
+              <li>{{ technology }}</li>
+              {% endfor %}
+            </ul>
           </div>
         </details>
-      </div> {# #about #}
-    </section> {# #explanation #}
-
- <section id="sample">
-  <div class="accordion">
-    <details open>
-      <summary>Stickprov</summary>
-      <div class="sample-content">
-        Se listan under "Direkt till funna problem".
       </div>
-    </details>
-  </div>
-</section>
-
-<section id="howto">
-  <div class="accordion">
-    <details>
-      <summary>Hur fungerar denna rapport?</summary>
-      <div>
-        <h3>Visa och filtrera fynd</h3>
-        <p>Alla funna tillgänglighetsproblem finns under <strong>Funna problem per sida</strong>. Du kan filtrera fynden på:</p>
-        <ul>
-          <li><strong>Påverkan</strong> (Stor, Medel, Liten, Rekommendation) — hur allvarligt är problemet för användaren?</li>
-          <li><strong>Typ</strong> (Innehåll, Teknik) — behöver innehållet eller tekniken anpassas?</li>
-          <li><strong>Status</strong> (Öppen, Åtgärdad) — vilka problem är redan lösta?</li>
-        </ul>
-
-        <h3>Följ framstegen</h3>
-        <p>Du kan följa dina framsteg på två sätt:</p>
-        <ul>
-          <li><strong>CSV-export</strong> — exportera alla fynd som CSV-fil och ladda in den i ett (online) kalkylark för att samarbeta med ditt team.</li>
-          <li><strong>Registrera i webbläsaren</strong> — aktivera detta alternativ för att per fynd hålla reda på om det är åtgärdat. Dina framsteg sparas i din webbläsare. Ingen annan kan se ditt resultat. Observera: framstegen är kopplade till din webbläsare. Om du använder en annan webbläsare eller enhet börjar räkningen om.</li>
-        </ul>
-
-        <h3>Dela en länk till ett specifikt fynd</h3>
-        <p>Vid varje fynd visas en <strong>länkikon</strong> när du för musen över det. Klicka på denna ikon för att kopiera direktlänken till det fyndet. Du kan klistra in länken i ett e-postmeddelande eller chattmeddelande, till exempel för att ställa en fråga till Proper Access om en specifik punkt.</p>
-      </div>
-    </details>
-  </div>
-</section>
-
-
-  </div> {# #box #}
-
-<div class="voortgang-opties" id="voortgang">
-  <h2>Framsteg åtgärdade fynd</h2>
-  <div class="voortgang-opties-grid">
-    <div class="voortgang-optie">
-      <h3><i class="fa-solid fa-file-csv" aria-hidden="true"></i> Samarbeta med ditt team</h3>
-      <p>Exportera alla fynd som CSV-fil. Du kan ladda in den i ett (online) kalkylark för att samarbeta med ditt team.</p>
-      <button id="exportCsvBtn">Exportera fynd</button>
-    </div>
-    <div class="voortgang-optie">
-      <h3><i class="fa-solid fa-browser" aria-hidden="true"></i> Håll reda på det själv i webbläsaren</h3>
-      <p>Håll per fynd reda på om det är åtgärdat. Dina framsteg sparas i din webbläsare. Ingen annan kan se ditt resultat.</p>
-      <label class="browser-tracking-toggle">
-        <input type="checkbox" id="browserTrackingToggle">
-        <span><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Registrera i webbläsaren</span>
-      </label>
-    </div>
-  </div>
-  <div class="resolved-dashboard" id="resolved-dashboard-issues" hidden>
-    <div class="resolved-progress">
-      <div class="resolved-progress-bar">
-        <div class="resolved-progress-fill" style="width: 0%"></div>
-      </div>
-      <span class="resolved-progress-text">
-        <strong class="resolved-count">0</strong> av
-        <strong class="resolved-total">0</strong> åtgärdade
-      </span>
-    </div>
-  </div>
-</div>
-
-<h1 class="meat">Funna problem per sida</h1>
-
-<div class="container filters">
-  <strong class="filters-heading">Filtrera fynd på:</strong>
-  <div class="filter-group">
-    <strong>Påverkan:</strong>
-    <button class="impact-btn active" data-impact="all">Alla <span class="impact-count" data-impact-count="all"></span></button>
-    <button class="impact-btn" data-impact="stor">Stor <span class="impact-count" data-impact-count="stor"></span></button>
-    <button class="impact-btn" data-impact="medel">Medel <span class="impact-count" data-impact-count="medel"></span></button>
-    <button class="impact-btn" data-impact="liten">Liten <span class="impact-count" data-impact-count="liten"></span></button>
-    <button class="impact-btn" data-impact="rekommendation">Rekommendation <span class="impact-count" data-impact-count="rekommendation"></span></button>
-  </div>
-  <div class="filter-group">
-    <strong>Typ:</strong>
-    <button class="filter-btn active" data-filter="all">Alla <span class="count" data-count="all"></span></button>
-    <button class="filter-btn" data-filter="innehåll">Innehåll <span class="count" data-count="innehåll"></span></button>
-    <button class="filter-btn" data-filter="teknik">Teknik <span class="count" data-count="teknik"></span></button>
-  </div>
-  <div class="filter-group" id="status-filter-group" hidden>
-    <strong>Status:</strong>
-    <button class="status-btn active" data-status="all">Alla</button>
-    <button class="status-btn" data-status="öppen">Öppen</button>
-    <button class="status-btn" data-status="åtgärdad">Åtgärdad</button>
-  </div>
-</div>
-
-<p id="no-results" class="no-results" hidden>Inga fynd hittades för detta filter.</p>
-
-    <section id="issues">
-    {% for issue in issueList %}
-
-        {% if issue.fileSlug !== page.fileSlug %}
-        <article class="issue" id="{{ issue.data.title | slugify }}">
-        <div class="issue-meta">
-          <h2 class="issue-title"><a href="#{{ issue.data.title | slugify }}">{{ issue.data.title }} <i class="fa-solid fa-link" aria-hidden="true"></i></a></h2>
-          <p>{{ issue.data.sc_text }}</p>
-
-        </div>
-          {{ issue.templateContent | safe }}
-        </article>
-        {% endif %}
-      {% endfor %}
     </section>
 
-<section id="vragen">
-  <h2>Frågor om rapporten?</h2>
-  <p>Har du frågor om ett fynd? Kopiera länken och skicka den tillsammans med din fråga till <a href="mailto:contact@properaccess.nl">contact@properaccess.nl</a>. Vi tänker gärna med dig om alternativa lösningar.</p>
-</section>
-
+    {# --- Framstegsalternativ --- #}
+    <div class="dash-voortgang" id="voortgang">
+      <h2>Framsteg åtgärdade fynd</h2>
+      <div class="voortgang-opties-grid">
+        <div class="voortgang-optie">
+          <h3><i class="fa-solid fa-file-csv" aria-hidden="true"></i> Samarbeta med ditt team</h3>
+          <p>Exportera alla fynd som CSV-fil. Du kan ladda in den i ett (online) kalkylark för att samarbeta med ditt team.</p>
+          <button id="exportCsvBtn">Exportera fynd</button>
+        </div>
+        <div class="voortgang-optie">
+          <h3><i class="fa-solid fa-browser" aria-hidden="true"></i> Håll reda på det själv i webbläsaren</h3>
+          <p>Håll per fynd reda på om det är åtgärdat. Dina framsteg sparas i din webbläsare. Ingen annan kan se ditt resultat.</p>
+          <label class="browser-tracking-toggle">
+            <input type="checkbox" id="browserTrackingToggle">
+            <span><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Registrera i webbläsaren</span>
+          </label>
+        </div>
+      </div>
+      <div class="resolved-dashboard" id="resolved-dashboard-issues" hidden>
+        <div class="resolved-progress">
+          <div class="resolved-progress-bar">
+            <div class="resolved-progress-fill" style="width: 0%"></div>
+          </div>
+          <span class="resolved-progress-text">
+            <strong class="resolved-count">0</strong> av
+            <strong class="resolved-total">0</strong> åtgärdade
+          </span>
+        </div>
+      </div>
     </div>
+
+    {# --- Findings section --- #}
+    <section class="dash-findings" id="fynd">
+      <h2 class="dash-findings-title">Funna problem</h2>
+
+      <div class="container filters">
+        <strong class="filters-heading">Filtrera fynd på:</strong>
+        <div class="filter-group">
+          <strong>Påverkan:</strong>
+          <button class="impact-btn active" data-impact="all">Alla <span class="impact-count" data-impact-count="all"></span></button>
+          <button class="impact-btn" data-impact="stor">Stor <span class="impact-count" data-impact-count="stor"></span></button>
+          <button class="impact-btn" data-impact="medel">Medel <span class="impact-count" data-impact-count="medel"></span></button>
+          <button class="impact-btn" data-impact="liten">Liten <span class="impact-count" data-impact-count="liten"></span></button>
+          <button class="impact-btn" data-impact="rekommendation">Rekommendation <span class="impact-count" data-impact-count="rekommendation"></span></button>
+        </div>
+        <div class="filter-group">
+          <strong>Typ:</strong>
+          <button class="filter-btn active" data-filter="all">Alla <span class="count" data-count="all"></span></button>
+          <button class="filter-btn" data-filter="innehåll">Innehåll <span class="count" data-count="innehåll"></span></button>
+          <button class="filter-btn" data-filter="teknik">Teknik <span class="count" data-count="teknik"></span></button>
+        </div>
+        <div class="filter-group" id="status-filter-group" hidden>
+          <strong>Status:</strong>
+          <button class="status-btn active" data-status="all">Alla</button>
+          <button class="status-btn" data-status="öppen">Öppen</button>
+          <button class="status-btn" data-status="åtgärdad">Åtgärdad</button>
+        </div>
+      </div>
+
+      <p id="no-results" class="no-results" hidden>Inga fynd hittades för detta filter.</p>
+
+      <section id="issues">
+        {% for issue in issueList %}
+          {% if issue.fileSlug !== page.fileSlug %}
+          <article class="issue" id="{{ issue.data.title | slugify }}">
+            <div class="issue-meta">
+              <h2 class="issue-title"><a href="#{{ issue.data.title | slugify }}">{{ issue.data.title }} <i class="fa-solid fa-link" aria-hidden="true"></i></a></h2>
+              <p>{{ issue.data.sc_text }}</p>
+            </div>
+            {{ issue.templateContent | safe }}
+          </article>
+          {% endif %}
+        {% endfor %}
+      </section>
+    </section>
+
+    {# --- Info accordions (under findings) --- #}
+    <section class="dash-info dash-info-bottom">
+      <div class="accordion">
+        <details>
+          <summary>Om denna granskning</summary>
+          <div>
+            {% markdown "/src/_shared-content/" + language + "/about-this-report.md" %}
+          </div>
+        </details>
+      </div>
+
+      <div class="accordion">
+        <details>
+          <summary>Hur fungerar denna rapport?</summary>
+          <div>
+            <h3>Visa och filtrera fynd</h3>
+            <p>Alla funna tillgänglighetsproblem finns under <strong>Funna problem</strong>. Du kan filtrera fynden på:</p>
+            <ul>
+              <li><strong>Påverkan</strong> (Stor, Medel, Liten, Rekommendation) — hur allvarligt är problemet för användaren?</li>
+              <li><strong>Typ</strong> (Innehåll, Teknik) — behöver innehållet eller tekniken anpassas?</li>
+              <li><strong>Status</strong> (Öppen, Åtgärdad) — vilka problem är redan lösta?</li>
+            </ul>
+
+            <h3>Följ framstegen</h3>
+            <p>Du kan följa dina framsteg på två sätt:</p>
+            <ul>
+              <li><strong>CSV-export</strong> — exportera alla fynd som CSV-fil och ladda in den i ett (online) kalkylark för att samarbeta med ditt team.</li>
+              <li><strong>Registrera i webbläsaren</strong> — aktivera detta alternativ för att per fynd hålla reda på om det är åtgärdat. Dina framsteg sparas i din webbläsare. Ingen annan kan se ditt resultat. Observera: framstegen är kopplade till din webbläsare. Om du använder en annan webbläsare eller enhet börjar räkningen om.</li>
+            </ul>
+
+            <h3>Dela en länk till ett specifikt fynd</h3>
+            <p>Vid varje fynd visas en <strong>länkikon</strong> när du för musen över det. Klicka på denna ikon för att kopiera direktlänken till det fyndet. Du kan klistra in länken i ett e-postmeddelande eller chattmeddelande, till exempel för att ställa en fråga till Proper Access om en specifik punkt.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    {# --- Footer --- #}
+    <footer class="dash-footer" id="fragor">
+      <div class="dash-footer-content">
+        <div class="dash-footer-col">
+          <h2>Frågor om rapporten?</h2>
+          <p>Har du frågor om ett fynd? Kopiera länken och skicka den tillsammans med din fråga till <a href="mailto:contact@properaccess.nl">contact@properaccess.nl</a>. Vi tänker gärna med dig om alternativa lösningar.</p>
+        </div>
+        <div class="dash-footer-col dash-footer-address">
+          <strong>Proper Access</strong><br>
+          Willemserf 20, 3755XK Eemnes<br>
+          085 5055 890<br>
+          <a href="https://www.properaccess.nl">properaccess.nl</a>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+</div>

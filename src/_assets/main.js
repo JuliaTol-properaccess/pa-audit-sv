@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   // === Scroll-observer voor sidebar navigatie ===
   const sections = document.querySelectorAll("article");
-  const navLinks = document.querySelectorAll(".sidebar a");
+  const navLinks = document.querySelectorAll(".dash-sidebar a");
 
   const observer = new IntersectionObserver(
     (entries) => {
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
           navLinks.forEach((link) => link.classList.remove("active"));
           const id = entry.target.getAttribute("id");
           const activeLink = document.querySelector(
-            `.sidebar a[href="#${id}"]`,
+            `.dash-sidebar a[href="#${id}"]`,
           );
           if (activeLink) {
             activeLink.classList.add("active");
@@ -74,32 +74,25 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // === Permalink-links toevoegen aan h3's binnen .issue ===
-  let issueCounter = 0;
   document.querySelectorAll("#issues .issue h3").forEach((header) => {
-    issueCounter++;
-    const nrMatch = header.textContent.match(/Issue nr\.\s*(\d+)/);
-    const issueNr = nrMatch ? nrMatch[1] : issueCounter;
-    const anchorId = "issue-" + issueNr;
-
-    // Set ID on parent div.issue for anchor scrolling
-    const parentIssue = header.closest("div.issue");
-    if (parentIssue) parentIssue.id = anchorId;
-    header.id = anchorId + "-h3";
+    const slug = header.textContent
+      .trim()
+      .toLowerCase()
+      .replace(/[^\w]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    header.id = slug;
 
     const text = header.textContent;
     header.textContent = "";
 
     const link = document.createElement("a");
-    link.href = `#${anchorId}`;
+    link.href = `#${slug}`;
     link.textContent = text;
 
-    const btn = document.createElement("button");
-    btn.className = "permalink-btn";
-    btn.dataset.anchor = anchorId;
-    btn.title = "Kopiera länk till detta fynd";
-    btn.setAttribute("aria-label", "Kopiera länk till fynd " + issueNr);
-    btn.innerHTML = '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M7.8 11.1l-1.9 1.9a2 2 0 0 1-2.8-2.8l2.8-2.8a2 2 0 0 1 2.8 0 .7.7 0 0 0 1-1 3.4 3.4 0 0 0-4.8 0L2.1 9.2a3.4 3.4 0 0 0 4.8 4.8l1.9-1.9a.7.7 0 0 0-1-1zm6.1-8.2a3.4 3.4 0 0 0-4.8 0L7.2 4.8a.7.7 0 0 0 1 1l1.9-1.9a2 2 0 0 1 2.8 2.8l-2.8 2.8a2 2 0 0 1-2.8 0 .7.7 0 0 0-1 1 3.4 3.4 0 0 0 4.8 0l2.8-2.8a3.4 3.4 0 0 0 0-4.8z"/></svg>';
-    link.appendChild(btn);
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-link";
+    icon.setAttribute("aria-hidden", "true");
+    link.appendChild(icon);
 
     header.appendChild(link);
   });
@@ -214,32 +207,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // === Permalink kopiëren bij klik op permalink-btn ===
-  document.querySelectorAll(".permalink-btn").forEach((btn) => {
-    btn.addEventListener("click", (e) => {
+  // === Permalink kopiëren bij klik op link-icoon ===
+  document.querySelectorAll("#issues .fa-link").forEach((icon) => {
+    icon.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const anchor = btn.dataset.anchor;
-      const url = location.origin + location.pathname + "#" + anchor;
+      const link = icon.closest("a");
+      const url = link.href;
       navigator.clipboard.writeText(url).then(() => {
-        history.replaceState(null, "", "#" + anchor);
-        const tip = document.createElement("span");
-        tip.className = "copy-tooltip";
-        tip.textContent = "Länk kopierad!";
-        btn.style.position = "relative";
-        btn.appendChild(tip);
-        setTimeout(() => tip.remove(), 2000);
+        const tooltip = document.createElement("span");
+        tooltip.className = "copy-tooltip";
+        tooltip.textContent = "Länk kopierad!";
+        const heading = link.closest("h2, h3");
+        heading.appendChild(tooltip);
+        setTimeout(() => tooltip.remove(), 2000);
       });
     });
   });
-
-  // Open and scroll to issue if URL has hash
-  if (location.hash) {
-    const target = document.querySelector(location.hash);
-    if (target) {
-      setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
-    }
-  }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -265,88 +249,135 @@ document.addEventListener("DOMContentLoaded", function () {
     issues.forEach((article) => {
       const pageTitle =
         article.querySelector("h2.issue-title")?.textContent.trim() || "";
-      let currentIssue = "";
-      let beskrivning = "";
-      let lösning = "";
-      let type = "";
-      let impact = "";
-      let wcag = "";
 
-      // alle children van dit article doorlopen
-      const nodes = Array.from(
-        article.querySelectorAll("h3, h4, p, figure, div.meta"),
-      );
+      // Support both accordion structure (details.finding-accordion) and flat h3 structure
+      const accordions = article.querySelectorAll("details.finding-accordion");
 
-      let parsingLösning = false;
+      if (accordions.length > 0) {
+        // Accordion structure
+        accordions.forEach((acc) => {
+          const titleEl = acc.querySelector(".finding-title");
+          const currentIssue = titleEl ? titleEl.textContent.trim() : "";
+          const body = acc.querySelector(".finding-body");
+          if (!body || !currentIssue) return;
 
-      nodes.forEach((el) => {
-        if (el.tagName === "H3") {
-          // Nieuwe issue titel
-          if (currentIssue) {
-            csvRows.push([
-              pageTitle,
-              currentIssue,
-              wcag,
-              impact,
-              type,
-              beskrivning.trim(),
-              lösning.trim(),
-            ]);
-            beskrivning = "";
-            lösning = "";
-            type = "";
-            impact = "";
-            wcag = "";
-            parsingLösning = false;
-          }
-          currentIssue = el.textContent.trim();
-        }
+          let impact = "", type = "", wcag = "", beskrivning = "", lösning = "";
 
-        if (currentIssue) {
-          if (el.tagName === "DIV" && el.classList.contains("meta")) {
-            const impactSpan = el.querySelector(".impact");
-            const typeSpan = el.querySelector(".type");
-            // WCAG staat ook als span met "type content" class, maar met tekst "WCAG"
-            const wcagSpan = Array.from(el.querySelectorAll("span")).find((s) =>
+          const metaDiv = body.querySelector(".meta");
+          if (metaDiv) {
+            const impactSpan = metaDiv.querySelector(".impact");
+            if (impactSpan) impact = impactSpan.textContent.replace(/Påverkan\s*:?\s*/i, "").trim();
+            const typeSpan = Array.from(metaDiv.querySelectorAll(".type")).find((s) => {
+              const b = s.querySelector("b");
+              return b && b.textContent.trim() === "Typ";
+            });
+            if (typeSpan) type = typeSpan.textContent.replace(/Typ\s*:?\s*/i, "").trim();
+            const wcagSpan = Array.from(metaDiv.querySelectorAll("span")).find((s) =>
               s.textContent.includes("WCAG"),
             );
-            if (impactSpan) {
-              impact = impactSpan.textContent
-                .replace(/Påverkan\s*:?\s*/i, "")
-                .trim();
+            if (wcagSpan) wcag = wcagSpan.textContent.replace(/WCAG\s*:?\s*/i, "").trim();
+          }
+
+          let parsingLösning = false;
+          body.querySelectorAll("h4, p, figure").forEach((el) => {
+            if (el.tagName === "H4" && el.textContent.trim().toLowerCase().startsWith("lösning")) {
+              parsingLösning = true;
+            } else if (el.tagName === "P" || el.tagName === "FIGURE") {
+              if (parsingLösning) {
+                lösning += el.innerText.trim() + " ";
+              } else {
+                beskrivning += el.innerText.trim() + " ";
+              }
             }
-            if (typeSpan) {
-              type = typeSpan.textContent.replace(/Typ\s*:?\s*/i, "").trim();
+          });
+
+          csvRows.push([pageTitle, currentIssue, wcag, impact, type, beskrivning.trim(), lösning.trim()]);
+        });
+      } else {
+        // Fallback: flat h3 structure
+        let currentIssue = "";
+        let beskrivning = "";
+        let lösning = "";
+        let type = "";
+        let impact = "";
+        let wcag = "";
+
+        // alle children van dit article doorlopen
+        const nodes = Array.from(
+          article.querySelectorAll("h3, h4, p, figure, div.meta"),
+        );
+
+        let parsingLösning = false;
+
+        nodes.forEach((el) => {
+          if (el.tagName === "H3") {
+            // Nieuwe issue titel
+            if (currentIssue) {
+              csvRows.push([
+                pageTitle,
+                currentIssue,
+                wcag,
+                impact,
+                type,
+                beskrivning.trim(),
+                lösning.trim(),
+              ]);
+              beskrivning = "";
+              lösning = "";
+              type = "";
+              impact = "";
+              wcag = "";
+              parsingLösning = false;
             }
-            if (wcagSpan) {
-              wcag = wcagSpan.textContent.replace(/WCAG\s*:?\s*/i, "").trim();
-            }
-          } else if (
-            el.tagName === "H4" &&
-            el.textContent.trim().toLowerCase().startsWith("lösning")
-          ) {
-            parsingLösning = true;
-          } else if (el.tagName === "P" || el.tagName === "FIGURE") {
-            if (parsingLösning) {
-              lösning += el.innerText.trim() + " ";
-            } else {
-              beskrivning += el.innerText.trim() + " ";
+            currentIssue = el.textContent.trim();
+          }
+
+          if (currentIssue) {
+            if (el.tagName === "DIV" && el.classList.contains("meta")) {
+              const impactSpan = el.querySelector(".impact");
+              const typeSpan = el.querySelector(".type");
+              // WCAG staat ook als span met "type content" class, maar met tekst "WCAG"
+              const wcagSpan = Array.from(el.querySelectorAll("span")).find((s) =>
+                s.textContent.includes("WCAG"),
+              );
+              if (impactSpan) {
+                impact = impactSpan.textContent
+                  .replace(/Påverkan\s*:?\s*/i, "")
+                  .trim();
+              }
+              if (typeSpan) {
+                type = typeSpan.textContent.replace(/Typ\s*:?\s*/i, "").trim();
+              }
+              if (wcagSpan) {
+                wcag = wcagSpan.textContent.replace(/WCAG\s*:?\s*/i, "").trim();
+              }
+            } else if (
+              el.tagName === "H4" &&
+              el.textContent.trim().toLowerCase().startsWith("lösning")
+            ) {
+              parsingLösning = true;
+            } else if (el.tagName === "P" || el.tagName === "FIGURE") {
+              if (parsingLösning) {
+                lösning += el.innerText.trim() + " ";
+              } else {
+                beskrivning += el.innerText.trim() + " ";
+              }
             }
           }
-        }
-      });
+        });
 
-      // laatste issue in dit artikel toevoegen
-      if (currentIssue) {
-        csvRows.push([
-          pageTitle,
-          currentIssue,
-          wcag,
-          impact,
-          type,
-          beskrivning.trim(),
-          lösning.trim(),
-        ]);
+        // laatste issue in dit artikel toevoegen
+        if (currentIssue) {
+          csvRows.push([
+            pageTitle,
+            currentIssue,
+            wcag,
+            impact,
+            type,
+            beskrivning.trim(),
+            lösning.trim(),
+          ]);
+        }
       }
     });
 
@@ -425,6 +456,133 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* =========================================================
+     1a. Transform findings into accordions (before resolved state)
+  ========================================================= */
+  document.querySelectorAll("#issues > article.issue").forEach((article) => {
+    const divIssues = Array.from(article.querySelectorAll(":scope > div.issue"));
+    if (divIssues.length === 0) return;
+
+    // Check if any div.issue has an actual h3 (a real finding)
+    const hasFindings = divIssues.some((d) => d.querySelector("h3"));
+    if (!hasFindings) return;
+
+    // Add header row before the first div.issue
+    const headerRow = document.createElement("div");
+    headerRow.className = "finding-header-row";
+    headerRow.innerHTML =
+      '<span class="fhr-title">Fynd</span>' +
+      '<span class="fhr-col">Påverkan</span>' +
+      '<span class="fhr-col">Typ</span>' +
+      '<span class="fhr-col">Funktion</span>';
+    divIssues[0].before(headerRow);
+
+    let issueCounter = 0;
+    divIssues.forEach((divIssue) => {
+      const h3 = divIssue.querySelector("h3");
+      if (!h3) return;
+
+      // Extract issue number from h3 text for anchor ID
+      issueCounter++;
+      const nrMatch = h3.textContent.match(/Issue nr\.\s*(\d+)/);
+      const issueNr = nrMatch ? nrMatch[1] : issueCounter;
+      divIssue.id = "issue-" + issueNr;
+
+      // Extract meta info
+      const metaDiv = divIssue.querySelector(".meta");
+      let impact = "";
+      let type = "";
+      let beperking = "";
+
+      if (metaDiv) {
+        const impactSpan = metaDiv.querySelector(".impact");
+        if (impactSpan)
+          impact = impactSpan.textContent.replace(/Påverkan\s*:\s*/i, "").trim();
+
+        const typeSpans = Array.from(metaDiv.querySelectorAll(".type"));
+        const typeSpan = typeSpans.find((s) => {
+          const b = s.querySelector("b");
+          return b && b.textContent.trim() === "Typ";
+        });
+        if (typeSpan)
+          type = typeSpan.textContent.replace(/Typ\s*:\s*/i, "").trim();
+
+        const beperkingSpan = metaDiv.querySelector(".beperking");
+        if (beperkingSpan) {
+          const bText = beperkingSpan.textContent
+            .replace(/Funktionsnedsättning\s*:\s*/i, "")
+            .trim();
+          beperking = bText
+            .split(", ")
+            .map((b) => b.charAt(0).toUpperCase())
+            .join(" ");
+        }
+      }
+
+      // Create details/summary structure
+      const details = document.createElement("details");
+      details.className = "finding-accordion";
+
+      const summary = document.createElement("summary");
+      summary.className = "finding-summary";
+
+      const titleText = h3.textContent.trim();
+      const impactLower = impact.toLowerCase();
+
+      summary.innerHTML =
+        '<span class="finding-title-cell">' +
+          '<span class="finding-title">' + titleText + '</span>' +
+          '<button class="permalink-btn" data-anchor="issue-' + issueNr + '" title="Kopiera länk till detta fynd" aria-label="Kopiera länk till fynd ' + issueNr + '">' +
+            '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M7.8 11.1l-1.9 1.9a2 2 0 0 1-2.8-2.8l2.8-2.8a2 2 0 0 1 2.8 0 .7.7 0 0 0 1-1 3.4 3.4 0 0 0-4.8 0L2.1 9.2a3.4 3.4 0 0 0 4.8 4.8l1.9-1.9a.7.7 0 0 0-1-1zm6.1-8.2a3.4 3.4 0 0 0-4.8 0L7.2 4.8a.7.7 0 0 0 1 1l1.9-1.9a2 2 0 0 1 2.8 2.8l-2.8 2.8a2 2 0 0 1-2.8 0 .7.7 0 0 0-1 1 3.4 3.4 0 0 0 4.8 0l2.8-2.8a3.4 3.4 0 0 0 0-4.8z"/></svg>' +
+          '</button>' +
+        '</span>' +
+        '<span class="finding-meta-impact" data-impact="' + impactLower + '">' + impact + "</span>" +
+        '<span class="finding-meta-type">' + type + "</span>" +
+        '<span class="finding-meta-beperking">' + beperking + "</span>";
+
+      const body = document.createElement("div");
+      body.className = "finding-body";
+
+      // Move all children of divIssue into body
+      while (divIssue.firstChild) {
+        body.appendChild(divIssue.firstChild);
+      }
+
+      details.appendChild(summary);
+      details.appendChild(body);
+      divIssue.appendChild(details);
+    });
+  });
+
+  // Permalink buttons: copy link to clipboard
+  document.querySelectorAll(".permalink-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation(); // Don't toggle accordion
+      const anchor = btn.dataset.anchor;
+      const url = location.origin + location.pathname + "#" + anchor;
+      navigator.clipboard.writeText(url).then(() => {
+        history.replaceState(null, "", "#" + anchor);
+        const tip = document.createElement("span");
+        tip.className = "copy-tooltip";
+        tip.textContent = "Länk kopierad!";
+        btn.style.position = "relative";
+        btn.appendChild(tip);
+        setTimeout(() => tip.remove(), 2000);
+      });
+    });
+  });
+
+  // Open accordion and scroll to issue if URL has hash
+  if (location.hash) {
+    const target = document.querySelector(location.hash);
+    if (target) {
+      const details = target.querySelector("details.finding-accordion");
+      if (details) details.open = true;
+      setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+    }
+  }
+
+  /* =========================================================
      1b. Resolved state (localStorage)
   ========================================================= */
   const reportId = document.documentElement.dataset.reportId;
@@ -454,7 +612,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const label = document.createElement("label");
       label.className = "resolved-toggle resolved-toggle-page";
       label.hidden = true;
-      label.title = "Markeer alle bevindingen op deze pagina als opgelost";
+      label.title = "Markera alla fynd på denna sida som åtgärdade";
 
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
@@ -768,4 +926,76 @@ document.addEventListener("DOMContentLoaded", () => {
   ========================================================= */
   updateCounts();
   applyFilters();
+
+  /* =========================================================
+     9️⃣ Stat cards: vul tellingen en afgekeurde SC's
+  ========================================================= */
+  const divIssuesAll = issues.filter((i) => i.tagName !== "ARTICLE");
+
+  // Impact counts
+  let liten = 0, medel = 0, stor = 0;
+  divIssuesAll.forEach((i) => {
+    if (i.dataset.impact === "liten") liten++;
+    else if (i.dataset.impact === "medel") medel++;
+    else if (i.dataset.impact === "stor") stor++;
+  });
+
+  const statKlein = document.getElementById("stat-klein");
+  const statMedium = document.getElementById("stat-medium");
+  const statGroot = document.getElementById("stat-groot");
+  if (statKlein) statKlein.textContent = liten;
+  if (statMedium) statMedium.textContent = medel;
+  if (statGroot) statGroot.textContent = stor;
+
+  // Type counts
+  let contentCount = 0, techniekCount = 0;
+  divIssuesAll.forEach((i) => {
+    if (i.dataset.type === "innehåll") contentCount++;
+    else if (i.dataset.type === "teknik") techniekCount++;
+  });
+
+  const statContent = document.getElementById("stat-content");
+  const statTechniek = document.getElementById("stat-techniek");
+  if (statContent) statContent.textContent = contentCount;
+  if (statTechniek) statTechniek.textContent = techniekCount;
+
+  // Afgekeurde SC's verzamelen
+  const failedSCs = new Set();
+  document.querySelectorAll("#issues .meta").forEach((meta) => {
+    const wcagSpan = Array.from(meta.querySelectorAll("span")).find((s) => {
+      const b = s.querySelector("b");
+      return b && b.textContent.trim() === "WCAG";
+    });
+    if (!wcagSpan) return;
+    const numbers = wcagSpan.textContent
+      .replace(/WCAG\s*:?\s*/, "")
+      .split(/[\s,]+/)
+      .filter(Boolean);
+    numbers.forEach((n) => failedSCs.add(n));
+  });
+
+  // Geslaagd berekenen (55 - aantal unieke afgekeurde SC's)
+  const passed = 55 - failedSCs.size;
+  const statPassed = document.getElementById("stat-passed");
+  if (statPassed) statPassed.textContent = passed;
+
+  // Afgekeurde SC-lijst vullen
+  const failedListEl = document.getElementById("failed-sc-list");
+  const failedRow = document.getElementById("failed-sc-row");
+  if (failedListEl && failedSCs.size > 0) {
+    const sorted = [...failedSCs].sort((a, b) => {
+      const pa = a.split(".").map(Number);
+      const pb = b.split(".").map(Number);
+      for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+        if ((pa[i] || 0) !== (pb[i] || 0)) return (pa[i] || 0) - (pb[i] || 0);
+      }
+      return 0;
+    });
+    failedListEl.innerHTML = sorted
+      .map((sc) => `<span class="sc-tag">${sc}</span>`)
+      .join(" ");
+  } else if (failedRow) {
+    failedRow.hidden = true;
+  }
+
 });
